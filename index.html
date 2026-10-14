@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BLT MD DEVICE | Melody File Player</title><link rel="stylesheet" href="styles.css"></head><body>
-<header class="top"><div class="brand"><div class="logo">BLT</div><div><p>OFFLINE MELODY TESTING</p><h1>BLT MD <span>DEVICE</span></h1><small>Melody File Reader & Horn Sound Player</small></div></div><div class="upload"><label class="btn primary" for="file">Choose melody file</label><input id="file" type="file" accept=".c,.h,.cpp,.txt,.ino,.hpp"><div><b id="filename">No file selected</b><small id="fileinfo">Upload a C/C++ melody file</small></div></div></header>
-<main class="layout"><section class="player panel"><div class="head"><div><p>NOW PLAYING</p><h2 id="title">Select a melody</h2></div><span class="pill" id="status">Ready</span></div>
+<header class="top"><div class="brand"><img class="logo" src="asset/Blurotech_logo.png" alt="Blurotech logo"><div><p>OFFLINE MELODY TESTING</p><h1>BLT MD <span>DEVICE</span></h1><small>Melody File Reader & Horn Sound Player</small></div></div><div class="upload"><button type="button" id="composeOpen" class="btn compose-top">✚ Compose</button><label class="btn primary" for="file">Choose melody file</label><input id="file" type="file" accept=".c,.h,.cpp,.txt,.ino,.hpp"><div><b id="filename">No file selected</b><small id="fileinfo">Upload a C/C++ melody file</small></div></div></header>
+<main id="playerView" class="layout"><section class="player panel"><div class="head"><div><p>NOW PLAYING</p><h2 id="title">Select a melody</h2></div><span class="pill" id="status">Ready</span></div>
 <div class="display"><div id="horns" class="horns"><span>H1</span><span>H2</span><span>H3</span><span>H4</span><span>H5</span><span>H6</span></div><div><small>CURRENT STEP</small><h3 id="stepdesc">Upload a file to begin</h3><span id="counter">Step — / —</span></div></div><div class="progress"><div id="bar"></div></div>
 <div class="controls"><button id="holdMelody" class="btn horn-hold" disabled>🔊 HORN · HOLD TO PLAY MELODY</button><button id="play" class="btn primary" disabled>▶ Play</button><button id="pause" class="btn" disabled>Ⅱ Pause</button><button id="stop" class="btn" disabled>■ Stop</button><button id="restart" class="btn" disabled>↺ Restart</button></div>
 <div class="options">
@@ -17,4 +17,39 @@
 <div id="frequencyControls" class="frequency-controls"></div>
 </section>
 <div class="head sequence"><div><p>SEQUENCE</p><h3>Melody steps</h3></div><span class="pill" id="total">0 steps</span></div><div id="steps" class="steps"><div class="empty">Upload a file and select a melody from the list.</div></div><small class="note">Local browser playback only — no USB, serial, Wi-Fi, or ESP32 connection required.</small></section>
-<aside class="library panel"><div class="head"><div><p>FILE LIBRARY</p><h2>Melody list</h2></div><span class="pill" id="count">0</span></div><input id="search" class="search" placeholder="Search melody 1, rising tone…"><div id="list" class="list"><div class="empty">Uploaded melodies will appear here one by one.</div></div><div class="foot"><span id="summary">Supports MelodyStep arrays</span><button id="clear" class="btn" disabled>Clear file</button></div></aside></main><script src="app.js"></script></body></html>
+<aside class="library panel"><div class="head"><div><p>FILE LIBRARY</p><h2>Melody list</h2></div><span class="pill" id="count">0</span></div><input id="search" class="search" placeholder="Search melody 1, rising tone…"><div id="list" class="list"><div class="empty">Uploaded melodies will appear here one by one.</div></div><div class="foot"><span id="summary">Supports MelodyStep arrays</span><button id="clear" class="btn" disabled>Clear file</button></div></aside></main>
+<section id="composerView" class="composer-wrap" hidden>
+  <div class="composer panel">
+    <div class="head"><div><p>TUNE COMPOSER</p><h2>Compose a new tone</h2></div><button type="button" id="composerBack" class="btn">← Back to player</button></div>
+    <p class="hint">Hold a key to record its tone duration. The gap before the next key is recorded as silence. Keys: X, C, V = low tones · B, N, M = high tones.</p>
+    <div class="key-grid">
+      <button type="button" class="compose-key low" data-key="x"><kbd>X</kbd><b>LOW 1</b><small>H1</small></button>
+      <button type="button" class="compose-key low" data-key="c"><kbd>C</kbd><b>LOW 2</b><small>H2</small></button>
+      <button type="button" class="compose-key low" data-key="v"><kbd>V</kbd><b>LOW 3</b><small>H3</small></button>
+      <button type="button" class="compose-key high" data-key="b"><kbd>B</kbd><b>HIGH 1</b><small>H4</small></button>
+      <button type="button" class="compose-key high" data-key="n"><kbd>N</kbd><b>HIGH 2</b><small>H5</small></button>
+      <button type="button" class="compose-key high" data-key="m"><kbd>M</kbd><b>HIGH 3</b><small>H6</small></button>
+    </div>
+    <div class="compose-status"><span id="composeState">Ready to record</span><span id="composeClock">0 notes</span></div>
+    <div class="compose-controls">
+      <button type="button" id="composeRecord" class="btn primary">● Start recording</button>
+      <button type="button" id="composeStopRecord" class="btn" disabled>■ Stop recording</button>
+      <button type="button" id="composeUndo" class="btn" disabled>↶ Undo last</button>
+      <button type="button" id="composeClear" class="btn">Clear</button>
+    </div>
+    <div class="compose-preview-head"><div><p>RECORDED TONE</p><h3>Timing sequence</h3></div><span class="pill" id="composeCount">0 steps</span></div>
+    <div id="composeSteps" class="compose-steps"><div class="empty">Start recording, then hold X, C, V, B, N or M to compose your tone.</div></div>
+    <div class="compose-bottom">
+      <label>Playback mode<select id="composeMode"><option value="once">Play once</option><option value="loop">Loop continuously</option></select></label>
+      <label>Tempo <span id="composeTempoText">1.00×</span><input id="composeTempo" type="range" min="0.5" max="2.5" step="0.05" value="1"></label>
+      <label>Tone name<input id="composeName" type="text" maxlength="40" value="MyTone" placeholder="MyTone"></label>
+    </div>
+    <div class="compose-controls">
+      <button type="button" id="composePlay" class="btn primary" disabled>▶ Preview tone</button>
+      <button type="button" id="composeStopPlay" class="btn" disabled>■ Stop preview</button>
+      <button type="button" id="composeDone" class="btn done-btn" disabled>✓ Done · Download tone.cpp</button>
+    </div>
+    <p class="hint">The downloaded C++ file includes measured key-hold durations and the silence gaps between key presses. Playback is a browser preview; the exported file uses H1–H6 and silence (0) steps.</p>
+  </div>
+</section>
+<script src="asset/source/default_melody.js"></script><script src="app.js"></script></body></html>

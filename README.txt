@@ -16,3 +16,12 @@ Melody parser update: supports simultaneous horn expressions such as {H1 | H2, 2
 Mobile optimization: responsive single-column layout, touch-friendly HORN buttons and sliders, compact melody library, two-column frequency controls, and independently scrollable melody steps. Horizontal overflow is suppressed on small screens.
 
 Auto-scroll behavior: playback highlights the active sequence step without automatically scrolling the page or sequence panel. The current viewport stays where the user left it on desktop and mobile.
+
+
+Tune Composer tab:
+- Click Compose in the top header.
+- Start recording, then hold X/C/V for low tones (H1/H2/H3) and B/N/M for high tones (H4/H5/H6). Physical keyboard keys and on-screen touch buttons are supported.
+- Key hold time is captured in milliseconds. The gap between releasing one key and pressing the next is recorded as a silence step.
+- Preview once or loop; use tempo control for browser preview.
+- Click Done · Download tone.cpp to export a C++ array. The generated file includes per-note durations and silence gaps.
+- The exported C++ structure is a generic MelodyStep array; adapt the struct/driver to the firmware's expected type and horn-output functions before flashing hardware.
