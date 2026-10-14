@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BLT MD DEVICE | Melody File Player</title><link rel="stylesheet" href="styles.css"></head><body>
+<header class="top"><div class="brand"><div class="logo">BLT</div><div><p>OFFLINE MELODY TESTING</p><h1>BLT MD <span>DEVICE</span></h1><small>Melody File Reader & Horn Sound Player</small></div></div><div class="upload"><label class="btn primary" for="file">Choose melody file</label><input id="file" type="file" accept=".c,.h,.cpp,.txt,.ino,.hpp"><div><b id="filename">No file selected</b><small id="fileinfo">Upload a C/C++ melody file</small></div></div></header>
+<main class="layout"><section class="player panel"><div class="head"><div><p>NOW PLAYING</p><h2 id="title">Select a melody</h2></div><span class="pill" id="status">Ready</span></div>
+<div class="display"><div id="horns" class="horns"><span>H1</span><span>H2</span><span>H3</span><span>H4</span><span>H5</span><span>H6</span></div><div><small>CURRENT STEP</small><h3 id="stepdesc">Upload a file to begin</h3><span id="counter">Step — / —</span></div></div><div class="progress"><div id="bar"></div></div>
+<div class="controls"><button id="holdMelody" class="btn horn-hold" disabled>🔊 HORN · HOLD TO PLAY MELODY</button><button id="play" class="btn primary" disabled>▶ Play</button><button id="pause" class="btn" disabled>Ⅱ Pause</button><button id="stop" class="btn" disabled>■ Stop</button><button id="restart" class="btn" disabled>↺ Restart</button></div>
+<div class="options">
+<label class="speed-control">Melody speed <span class="speed-readout" id="speedtxt">1.00× Normal</span><input id="speed" type="range" min="0.25" max="6" step="0.05" value="1" aria-label="Melody playback speed"><span class="range-ends"><span>0.25× Slow</span><span>6× Fast</span></span></label>
+<label>Volume <b id="voltxt">15%</b><input id="vol" type="range" min="0" max="50" value="15"></label>
+</div>
+<section class="horn-test-panel">
+<div class="head"><div><p>MANUAL HORN TEST</p><h3>Press and hold to sound</h3></div><span class="pill">6 channels</span></div>
+<div id="manualHorns" class="manual-horns"></div>
+<p class="hint">Hold a horn button to play continuously. Release to stop. Frequency changes affect melody playback too.</p>
+</section>
+<section class="frequency-panel">
+<div class="head"><div><p>TONE CONFIGURATION</p><h3>Individual horn frequencies</h3></div><button id="resetFreq" class="btn">Reset</button></div>
+<div id="frequencyControls" class="frequency-controls"></div>
+</section>
+<div class="head sequence"><div><p>SEQUENCE</p><h3>Melody steps</h3></div><span class="pill" id="total">0 steps</span></div><div id="steps" class="steps"><div class="empty">Upload a file and select a melody from the list.</div></div><small class="note">Local browser playback only — no USB, serial, Wi-Fi, or ESP32 connection required.</small></section>
+<aside class="library panel"><div class="head"><div><p>FILE LIBRARY</p><h2>Melody list</h2></div><span class="pill" id="count">0</span></div><input id="search" class="search" placeholder="Search melody 1, rising tone…"><div id="list" class="list"><div class="empty">Uploaded melodies will appear here one by one.</div></div><div class="foot"><span id="summary">Supports MelodyStep arrays</span><button id="clear" class="btn" disabled>Clear file</button></div></aside></main><script src="app.js"></script></body></html>
